@@ -3,25 +3,51 @@ import {
   MoreVertRounded,
   SearchRounded,
 } from "@mui/icons-material";
+import Chat from "./Chat";
 import { Avatar, IconButton } from "@mui/material";
 import styled from "styled-components";
 import * as EmailValidator from "email-validator";
+import { auth, db } from "../firebase";
+import { useAuthState } from "react-firebase-hooks/auth";
+import { useCollection } from "react-firebase-hooks/firestore";
 
 function Sidebar() {
+  const [user] = useAuthState(auth);
+  const userChatRef = db
+    .collection("chats")
+    .where("users", "array-contains", user.email);
+  const [chatSnapshot] = useCollection(userChatRef);
+
   const createChat = () => {
     const input = prompt(
       "Please enter an email adress for the user you wish to chat with"
     );
+
     if (!input) return null;
-    if (EmailValidator.validate(input)) {
+
+    if (
+      EmailValidator.validate(input) &&
+      !chatAlreadyExists(input) &&
+      input !== user.email
+    ) {
       //   we need to add the chat into the DB CHAT COLLECTIONS thanks to Email Validator
+      // BUT ONLY IF THE EMAIL IS VALID AND ALREADY EXISTS
+      db.collection("chats").add({
+        users: [user.email, input], //the email value is our input => create an array pushed into my collection in the db
+      });
     }
   };
+
+  const chatAlreadyExists = (recipientEmail) =>
+    !!chatSnapshot?.docs.find(
+      (chat) =>
+        chat.data().users.find((user) => user === recipientEmail)?.length > 0
+    );
 
   return (
     <Container>
       <Header>
-        <UserAvatar />
+        <UserAvatar src={user.photoURL} onClick={() => auth.signOut()} />
 
         <IconsContainer>
           <IconButton>
@@ -41,6 +67,9 @@ function Sidebar() {
       <SidebarButton onClick={createChat}>Start a new chat!</SidebarButton>
 
       {/* LIST OF CHATS (COMPONENT WITH PROPS) */}
+      {chatSnapshot?.docs.map((chat) => (
+        <Chat key={chat.id} id={chat.id} users={chat.data().users} />
+      ))}
     </Container>
   );
 }
@@ -64,6 +93,7 @@ const SearchInput = styled.input`
 
 const SidebarButton = styled(IconButton)`
   width: 100%;
+  padding: 20px;
   &&& {
     border-top: 1px solid whitesmoke;
     border-bottom: 1px solid whitesmoke;
