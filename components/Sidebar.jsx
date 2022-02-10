@@ -4,7 +4,7 @@ import {
   SearchRounded,
 } from "@mui/icons-material";
 import Chat from "./Chat";
-import { Avatar, IconButton } from "@mui/material";
+import { Avatar, Button, IconButton } from "@mui/material";
 import styled from "styled-components";
 import * as EmailValidator from "email-validator";
 import { auth, db } from "../firebase";
@@ -88,23 +88,24 @@ const Container = styled.div`
 const Search = styled.div`
   display: flex;
   align-items: center;
-  padding: 5px;
+  padding: 20px;
   border-radius: 2px;
+`;
+
+const SidebarButton = styled(Button)`
+  width: 100%;
+  &&& {
+    color: black;
+    font-weight: 800;
+    border-top: 1px solid whitesmoke;
+    border-bottom: 1px solid whitesmoke;
+  }
 `;
 
 const SearchInput = styled.input`
   outline-width: 0;
   border: none;
   flex: 1;
-`;
-
-const SidebarButton = styled(IconButton)`
-  width: 100%;
-  padding: 20px;
-  &&& {
-    border-top: 1px solid whitesmoke;
-    border-bottom: 1px solid whitesmoke;
-  }
 `;
 
 const Header = styled.div`
