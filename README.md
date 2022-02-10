@@ -12,9 +12,22 @@ npm run dev
 yarn dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [https://whatsapp-umber.vercel.app/](https://whatsapp-umber.vercel.app/) with your browser to see the result.
 
 You can start editing the page by modifying `pages/index.js`. The page auto-updates as you edit the file.
+
+# Google Login
+
+![GoogleLogin](GoogleLogin.jpeg)
+# Homepage
+
+![Homepage](Homepage.jpeg)
+# ChatDown
+
+![ChatDown](ChatDown.jpeg)
+# ChatUp
+
+![ChatUp](ChatUp.jpeg)
 
 [API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.js`.
 
